@@ -1,4 +1,3 @@
-```js
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
@@ -23,7 +22,7 @@ function readDB() {
     };
   }
 
-  return JSON.parse(fs.readFileSync(DB_FILE));
+  return JSON.parse(fs.readFileSync(DB_FILE, "utf8"));
 }
 
 function writeDB(data) {
@@ -34,9 +33,10 @@ function writeDB(data) {
 app.post("/login", (req, res) => {
   const db = readDB();
 
-  const user = db.usuarios.find(u =>
-    u.usuario === req.body.usuario &&
-    u.senha === req.body.senha
+  const user = db.usuarios.find(
+    (u) =>
+      u.usuario === req.body.usuario &&
+      u.senha === req.body.senha
   );
 
   if (!user) {
@@ -88,7 +88,7 @@ app.post("/triagem", (req, res) => {
     temperatura: req.body.temperatura,
     alergia: req.body.alergia,
     observacao: req.body.observacao,
-    risco,
+    risco: risco,
     status: "aguardando_medico",
     createdAt: new Date()
   };
@@ -149,7 +149,6 @@ app.get("/medicacoes", (req, res) => {
 // START DO SERVIDOR
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+app.listen(PORT, "0.0.0.0", function () {
+  console.log("Servidor rodando na porta " + PORT);
 });
-```
